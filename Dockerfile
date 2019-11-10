@@ -8,7 +8,8 @@ ARG TESSERACT=/opt/tesseract
 ARG LEPTONICA=/opt/leptonica
 ARG DIST=/opt/build-dist
 # change OCR_LANG to enable the layer for different languages
-ARG OCR_LANG=deu
+ARG LANGS="hin ara"
+# ARG OCR_LANG=deu
 # change TESSERACT_DATA_SUFFIX to use different datafiles (options: "_best", "_fast" and "")
 ARG TESSERACT_DATA_SUFFIX=_fast
 ARG TESSERACT_DATA_VERSION=4.0.0
@@ -47,7 +48,9 @@ RUN mkdir -p ${DIST}/lib && mkdir -p ${DIST}/bin && \
 
 WORKDIR ${DIST}/tesseract/share/tessdata
 RUN curl -L https://github.com/tesseract-ocr/tessdata${TESSERACT_DATA_SUFFIX}/raw/${TESSERACT_DATA_VERSION}/osd.traineddata > osd.traineddata && \
-    curl -L https://github.com/tesseract-ocr/tessdata${TESSERACT_DATA_SUFFIX}/raw/${TESSERACT_DATA_VERSION}/eng.traineddata > eng.traineddata && \
-    curl -L https://github.com/tesseract-ocr/tessdata${TESSERACT_DATA_SUFFIX}/raw/${TESSERACT_DATA_VERSION}/${OCR_LANG}.traineddata > ${OCR_LANG}.traineddata
+    curl -L https://github.com/tesseract-ocr/tessdata${TESSERACT_DATA_SUFFIX}/raw/${TESSERACT_DATA_VERSION}/eng.traineddata > eng.traineddata 
+RUN for OCR_LANG in ${LANGS}; do \    
+    curl -L https://github.com/tesseract-ocr/tessdata${TESSERACT_DATA_SUFFIX}/raw/${TESSERACT_DATA_VERSION}/${OCR_LANG}.traineddata > ${OCR_LANG}.traineddata \
+    ;done
 
 WORKDIR /var/task
