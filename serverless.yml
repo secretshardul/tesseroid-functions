@@ -8,13 +8,8 @@ plugins:
   - serverless-pseudo-parameters
 provider:
   name: aws
-  runtime: python3.6
+  runtime: python3.6 #issue- dont change version
   region: eu-central-1
-
-custom:
-  pythonRequirements:
-    # disable slim; strip might be broken => leads to error: /var/task/PIL/_imaging.cpython-36m-x86_64-linux-gnu.so: ELF load command address/offset not properly aligned
-    # slim: true
 
 
 functions:

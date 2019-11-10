@@ -14,4 +14,10 @@ curl -X POST https://mcbn0jkd8l.execute-api.eu-central-1.amazonaws.com/dev/ocr -
 ```sh
 sls plugin install -n serverless-python-requirements
 sls plugin install -n serverless-pseudo-parameters
+
+# uninstall
+serverless plugin uninstall --n serverless-python-requirements
 ```
+
+# shenanigans
+1. don't upgrade python runtime to 3.7, it's causing PIL error
