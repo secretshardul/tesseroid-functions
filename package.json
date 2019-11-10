@@ -1,28 +1,10 @@
 {
-  "name": "aws-lambda-tesseract-layer",
-  "version": "1.0.0",
-  "description": "Tesseract OCR Lambda Layer ===",
-  "main": "index.js",
-  "directories": {
-    "example": "example"
-  },
+  "name": "tesseract-ocr-example",
+  "description": "",
+  "version": "0.1.0",
   "dependencies": {},
   "devDependencies": {
-    "serverless": ">=1.34.0"
-  },
-  "scripts": {
-    "deploy": "./node_modules/serverless/bin/serverless deploy",
-    "build": "./build.sh",
-    "sls": "./node_modules/serverless/bin/serverless"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bweigel/aws-lambda-tesseract-layer.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/bweigel/aws-lambda-tesseract-layer/issues"
-  },
-  "homepage": "https://github.com/bweigel/aws-lambda-tesseract-layer#readme"
+    "serverless-pseudo-parameters": "^2.5.0",
+    "serverless-python-requirements": "^5.0.1"
+  }
 }
