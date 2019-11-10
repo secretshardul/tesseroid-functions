@@ -8,7 +8,7 @@ def main(event, context):
     url = event["body"]
     res = requests.get(url)
     img = Image.open(BytesIO(res.content))
-    txt = pytesseract.image_to_string(img, lang="eng")
+    txt = pytesseract.image_to_string(img, lang="heb")
     # data=json.loads(event["body"])
     # txt=data["lang"]
     return {"statusCode": 200, "body": txt}
