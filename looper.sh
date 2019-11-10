@@ -17,3 +17,4 @@ for x in $string
 do
     echo $x
 done
+# echo "${#string[@]}"

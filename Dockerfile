@@ -8,7 +8,13 @@ ARG TESSERACT=/opt/tesseract
 ARG LEPTONICA=/opt/leptonica
 ARG DIST=/opt/build-dist
 # change OCR_LANG to enable the layer for different languages
-ARG LANGS="hin ara"
+ARG ind="san hin urd pan mar guj asm ben ori kan tel tam mal sin nep bod dzo"
+ARG middle="pus ara fas tur aze aze_cyrl kat kat_old heb"
+ARG africa="afr amh swa"
+ARG west="eng gle cym fra spa spa_old ita ita_old ell grc por pol deu nld dan nor swe isl rus ukr"
+ARG east="chi_sim chi_sim_vert chi_tra chi_tra_vert kor kor_vert jpn jpn_vert"
+ARG sea="mya msa ind jav tha lao vie khm tgl"
+ARG LANGS="$equ $ind $middle $africa $west $east $sea"
 # ARG OCR_LANG=deu
 # change TESSERACT_DATA_SUFFIX to use different datafiles (options: "_best", "_fast" and "")
 ARG TESSERACT_DATA_SUFFIX=_fast
