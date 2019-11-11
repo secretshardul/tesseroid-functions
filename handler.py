@@ -1,15 +1,17 @@
-from PIL import Image
-import requests
 import pytesseract
-from io import BytesIO
-import json
+import urllib
 
 def main(event, context):
     url = event["body"]
-    res = requests.get(url)
-    img = Image.open(BytesIO(res.content))
-    txt = pytesseract.image_to_string(img, lang="heb")
-    # data=json.loads(event["body"])
-    # txt=data["lang"]
+    # better save to /tmp/img then use OCR
+    with urllib.request.urlopen(url) as response, open("/tmp/img", 'wb') as out_file: #no .extension needed
+        data = response.read() # a `bytes` object
+        out_file.write(data)
+    txt = pytesseract.image_to_string("/tmp/img", lang="eng")
+
+    # print(txt)
     return {"statusCode": 200, "body": txt}
+
+# if __name__=="__main__":
+#     main(0,0)
 
