@@ -16,7 +16,7 @@ functions:
   tesseract-ocr:
     handler: handler.main
     layers:
-      - arn:aws:lambda:eu-central-1:105926622732:layer:tesseract:6
+      - arn:aws:lambda:eu-central-1:105926622732:layer:tesseract:7
       # Update this ARN after you've deployed the tesseract layer
       # - arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:layer:tesseract:1
     events:
