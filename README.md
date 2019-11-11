@@ -7,7 +7,7 @@ curl -X POST https://mcbn0jkd8l.execute-api.eu-central-1.amazonaws.com/dev/ocr -
 # tiff - works
 curl -X POST https://mcbn0jkd8l.execute-api.eu-central-1.amazonaws.com/dev/ocr -d "https://www.online-convert.com/downloadfile/eefcbca6-e32f-4746-b48c-b79eab426c2d/5e98fef3ab27e890f09bb70257584ec0"
 # gif- works
-curl -X POST https://mcbn0jkd8l.execute-api.eu-central-1.amazonaws.com/dev/ocr -d "https://media3.giphy.com/media/D0Uhua2Z1PC8w/source.gif
+curl -X POST https://mcbn0jkd8l.execute-api.eu-central-1.amazonaws.com/dev/ocr -d "https://media3.giphy.com/media/D0Uhua2Z1PC8w/source.gif"
 
 # hebrew post
 curl -X POST https://mcbn0jkd8l.execute-api.eu-central-1.amazonaws.com/dev/ocr -d "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQdUtag90lRt2LVqV0MCHiO-w-FCbEpkjSOrOaNB6_3wVvr1kj0"

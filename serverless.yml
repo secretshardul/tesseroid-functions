@@ -1,6 +1,6 @@
 org: greedyman
 app: ocr
-service: tesseract-ocr-example
+service: tesseroid_functions
 frameworkVersion: ">=1.34.0 <2.0.0"
 
 plugins:
@@ -9,14 +9,14 @@ plugins:
 provider:
   name: aws
   runtime: python3.6 #issue- dont change version
-  region: eu-central-1
+  region: ap-south-1
 
 
 functions:
-  tesseract-ocr:
+  main:
     handler: handler.main
     layers:
-      - arn:aws:lambda:eu-central-1:105926622732:layer:tesseract:9
+      - arn:aws:lambda:eu-central-1:105926622732:layer:tesseract:10
       # Update this ARN after you've deployed the tesseract layer
       # - arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:layer:tesseract:1
     events:
