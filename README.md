@@ -28,4 +28,6 @@ serverless plugin uninstall --n serverless-python-requirements
 ```
 
 # shenanigans
-1. don't upgrade python runtime to 3.7, it's causing PIL error
+1. don't upgrade python runtime to 3.7, it's causing PIL error- fixed with pipenv
+2. 
+
