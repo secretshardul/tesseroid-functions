@@ -9,6 +9,8 @@ provider:
   name: aws
   runtime: python3.7 #fixed with pipenv
   region: us-east-1
+  memorySize: 128
+  profile: aws_educate_serverless
 
 custom:
   pythonRequirements:
@@ -27,3 +29,5 @@ functions:
       - http:
           path: ocr
           method: post
+      
+# resources- Raw cloudformation code
