@@ -1,6 +1,6 @@
 # list of functions
 1. get_tesseract_version
-2. image_to_string
+2. image_to_string: image,lang,config,nice,output_type(string,dict,byte),timeout
 3. image_to_boxes
 4. image_to_data 
 5. image_to_osd 
