@@ -1,0 +1,70 @@
+{
+    "body": "----------------------------658490041468120637580039\r\nContent-Disposition: form-data; name=\"image\"\r\n\r\nhttps://i.imgur.com/zGRdhAT.jpg\r\n----------------------------658490041468120637580039\r\nContent-Disposition: form-data; name=\"image\"\r\n\r\nhttps://media3.giphy.com/media/D0Uhua2Z1PC8w/source.gif\r\n----------------------------658490041468120637580039--\r\n",
+    "headers": {
+        "Content-Type": "multipart/form-data; boundary=--------------------------658490041468120637580039",
+        "User-Agent": "PostmanRuntime/7.19.0",
+        "Accept": "*/*",
+        "Host": "localhost:3000",
+        "Accept-Encoding": "gzip, deflate",
+        "Content-Length": "350",
+        "Connection": "keep-alive"
+    },
+    "httpMethod": "POST",
+    "multiValueHeaders": {
+        "Content-Type": [
+            "multipart/form-data; boundary=--------------------------658490041468120637580039"
+        ],
+        "User-Agent": [
+            "PostmanRuntime/7.19.0"
+        ],
+        "Accept": [
+            "*/*"
+        ],
+        "Host": [
+            "localhost:3000"
+        ],
+        "Accept-Encoding": [
+            "gzip, deflate"
+        ],
+        "Content-Length": [
+            "350"
+        ],
+        "Connection": [
+            "keep-alive"
+        ]
+    },
+    "multiValueQueryStringParameters": null,
+    "path": "/ocr",
+    "pathParameters": null,
+    "queryStringParameters": null,
+    "requestContext": {
+        "accountId": "offlineContext_accountId",
+        "apiId": "offlineContext_apiId",
+        "authorizer": {
+            "principalId": "offlineContext_authorizer_principalId"
+        },
+        "httpMethod": "POST",
+        "identity": {
+            "accountId": "offlineContext_accountId",
+            "apiKey": "offlineContext_apiKey",
+            "caller": "offlineContext_caller",
+            "cognitoAuthenticationProvider": "offlineContext_cognitoAuthenticationProvider",
+            "cognitoAuthenticationType": "offlineContext_cognitoAuthenticationType",
+            "cognitoIdentityId": "offlineContext_cognitoIdentityId",
+            "cognitoIdentityPoolId": "offlineContext_cognitoIdentityPoolId",
+            "sourceIp": "127.0.0.1",
+            "user": "offlineContext_user",
+            "userAgent": "PostmanRuntime/7.19.0",
+            "userArn": "offlineContext_userArn"
+        },
+        "protocol": "HTTP/1.1",
+        "requestId": "offlineContext_requestId_ck2zpk8wl001ak2518sa7f7oc",
+        "requestTimeEpoch": 1573796097808,
+        "resourceId": "offlineContext_resourceId",
+        "resourcePath": "/ocr",
+        "stage": "dev"
+    },
+    "resource": "/ocr",
+    "stageVariables": null,
+    "isOffline": true
+}

@@ -11,6 +11,13 @@ curl -X POST  https://4a4tavwbnd.execute-api.us-east-1.amazonaws.com/dev/ocr -d 
 
 # hebrew post
 curl -X POST  https://4a4tavwbnd.execute-api.us-east-1.amazonaws.com/dev/ocr -d "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQdUtag90lRt2LVqV0MCHiO-w-FCbEpkjSOrOaNB6_3wVvr1kj0"
+
+# multipart/form-data
+curl -X POST \
+  http://localhost:3000/ocr \
+  -H 'content-type: multipart/form-data' \
+  -F image=https://i.imgur.com/zGRdhAT.jpg \
+  -F image=https://media3.giphy.com/media/D0Uhua2Z1PC8w/source.gif
 ```
 
 # API architecture for POST 
