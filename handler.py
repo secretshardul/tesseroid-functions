@@ -6,6 +6,8 @@ import json
 from requests_toolbelt.multipart import decoder
 ERRORMSG="Invalid parameters. Use [image](compulsory, can be array),lang,config,output_type,timeout"
 def main(event,context):
+    # return {"statusCode": 400, "body": json.dumps(event)}
+
     body=event["body"].encode()
     content_type=event["headers"]["Content-Type"]
     response = ''
@@ -14,7 +16,8 @@ def main(event,context):
         "images":[],
         "lang":"eng",
         "config":"",
-        "output_type":"string"
+        "output_type":"string",
+        "encoding":[]
     }
     
     #skip timeout
@@ -24,6 +27,7 @@ def main(event,context):
         print("header %s"%part.headers)
         val=part.text # inside value- url or binary
         content_disp=part.headers[b'Content-Disposition']
+        recieved["encoding"].append(part.encoding)
         print("content disposition: %s"%content_disp) # b'form-data; name="image"; filename="1.jpeg"'
         if b'name="image"' in content_disp:
             recieved["images"].append(val)
@@ -42,15 +46,30 @@ def main(event,context):
     resp_body=[]
     try:
         for image in recieved["images"]:
-            with urllib.request.urlopen(image) as response, open("/tmp/img", 'wb') as out_file: #no .extension needed
-                data = response.read() # a `bytes` object
-                out_file.write(data)
-            txt = pytesseract.image_to_string("/tmp/img",lang=recieved["lang"],config=recieved["config"],output_type=recieved["output_type"]) # type casting
-            print(txt)
-            resp_body.append(txt)
-        return {"statusCode": 200, "body": str(resp_body)}
+            # write binary to file
+            print("image: %s"%image)
+            # with open("img", 'wb') as out_file: #no .extension needed
+            #     out_file.write(json.dumps(image))
+            # out_file.close()
+            # file1 = open(r"img","wb") 
+            # file1.write(json.dumps(image))
+            # file1.close()
+            # with urllib.request.urlopen(image) as response, open("img", 'wb') as out_file: #no .extension needed
+            #     data = response.read() # a `bytes` object
+            #     print("data from URL: %s"%data)
+            #     out_file.write(data)
+            res = requests.get(image)
+            return {"statusCode": 200, "body": res}
+
+            # img = Image.open(BytesIO(json.dumps(image)))
+            # print("ok till here")
+            # txt = pytesseract.image_to_string("img",lang=recieved["lang"],config=recieved["config"],output_type=recieved["output_type"]) # type casting
+            # print(txt)
+            # resp_body.append(txt)
+        # return {"statusCode": 200, "body": str(resp_body)}
     except:
-        return {"statusCode": 400, "body": ERRORMSG}
+        print("fail")
+        return {"statusCode": 400, "body": json.dumps(recieved["images"][0])}
 
     # return {
     #     'statusCode': 200,

@@ -33,7 +33,12 @@ sls plugin install -n serverless-pseudo-parameters
 # uninstall
 serverless plugin uninstall --n serverless-python-requirements
 ```
-
+# error handling
+In python code add 
+```py
+raise Exception("msg")
+```
+In method response add desired HTTP code, eg 400. In integration response add regex as "msg"(same as returned by lambda error) for given HTTP code. Add custom message in mapping template.
 # shenanigans
 1. don't upgrade python runtime to 3.7, it's causing PIL error- fixed with pipenv
 2. 
