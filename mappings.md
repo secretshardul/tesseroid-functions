@@ -1,3 +1,31 @@
+# application/octet-stream
+{
+    "type": "img_file",
+    "image": "$input.body",
+    "lang": "$input.params('lang')",
+    "config": "$input.params('config')",
+    "output_type": "$input.params('output_type')"
+}
+
+# application/zip
+{
+    "type": "zip",
+    "zip": "$input.body",
+    "lang": "$input.params('lang')",
+    "config": "$input.params('config')",
+    "output_type": "$input.params('output_type')"
+}
+# application/json
+{
+    "type": "json",
+    "image": $input.json('$.image'),
+    "lang": "$input.params('lang')",
+    "config": "$input.params('config')",
+    "output_type": "$input.params('output_type')"
+}
+
+# handler code
+```py
 import pytesseract
 import urllib.request
 import base64
@@ -75,3 +103,4 @@ def main(event, context):
 # if __name__=="__main__":
 #     main(0,0)
 
+```

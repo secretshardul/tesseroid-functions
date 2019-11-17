@@ -23,12 +23,24 @@ functions:
   main:
     handler: handler.main
     layers:
-      - arn:aws:lambda:us-east-1:260659138565:layer:layer_fast:1
+      - arn:aws:lambda:us-east-1:260659138565:layer:layer_fast:2
       # Update this ARN after you've deployed the tesseract layer
       # - arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:layer:tesseract:1
     events:
       - http:
           path: ocr
           method: post
+          integration: lambda
+          request:
+            template:
+              application/json: '
+              {
+                  "type": "json",
+                  "image": $input.json(''$.image''),
+                  "lang": "$input.params(''lang'')",
+                  "config": "$input.params(''config'')",
+                  "output_type": "$input.params(''output_type'')"
+              }'
+
       
 # resources- Raw cloudformation code
