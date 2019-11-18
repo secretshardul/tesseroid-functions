@@ -23,7 +23,7 @@
     "config": "$input.params('config')",
     "output_type": "$input.params('output_type')"
 }
-
+Content-type header and query string parameters are not needed. Mapping template recognizes it.
 # handler code
 ```py
 import pytesseract

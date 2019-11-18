@@ -69,7 +69,7 @@ def main(event, context):
             
             txt.append(ocr)
     
-    return txt
+    return {"statusCode": "200", "body": txt }
     
 
 # if __name__=="__main__":
