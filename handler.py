@@ -17,14 +17,15 @@ def main(event, context):
     lang="eng"
     config=""
     output_type="string" #bytes type not supported
-    
+    func="string"
     if event["lang"]!="":
         lang=event["lang"]
     if event["config"]!="":
         config=event["config"]
     if event["output_type"]!="":
         output_type=event["output_type"]
-
+    if event["func"]!="":
+        func=event["func"]
     
    
     txt=[]
@@ -34,7 +35,7 @@ def main(event, context):
         image=base64.b64decode(event["image"])
         file1.write(image)
         file1.close()  
-        ocr = pytesseract.image_to_string("/tmp/img",lang=lang,config=config,output_type=output_type)
+        ocr = select_func("/tmp/img",lang=lang,config=config,output_type=output_type,func=func)
         txt.append(ocr)
 
     elif(event["type"]=="zip"):
@@ -52,7 +53,7 @@ def main(event, context):
             with open(path, 'wb') as f:
                 f.write(zfile.read(name))
                 f.close()
-            ocr = pytesseract.image_to_string(path,lang=lang,config=config,output_type=output_type)
+            ocr = select_func(path,lang=lang,config=config,output_type=output_type,func=func)
             txt.append(ocr)
 
     elif(event["type"]=="json"):
@@ -65,13 +66,28 @@ def main(event, context):
             image=response.read()
             file1.write(image)
             file1.close()  
-            ocr = pytesseract.image_to_string("/tmp/img",lang=lang,config=config,output_type=output_type)
+            ocr = select_func("/tmp/img",lang=lang,config=config,output_type=output_type,func=func)
             
-            txt.append(ocr)
+            txt.append(str(ocr))
     
-    return {"statusCode": "200", "body": txt }
+    return json.dumps(txt)
     
+def select_func(image,lang,config,output_type,func):
+    if (func=="string"):
+        return pytesseract.image_to_string(image,lang=lang,config=config,output_type=output_type)
+    elif (func=="boxes"):
+        return pytesseract.image_to_boxes(image=image,config="box")
+        # return image_to_boxes(image,lang,config,output_type)
+    elif (func=="data"):
+        return pytesseract.image_to_data(image,lang=lang,config=config,output_type=output_type)
+    elif (func=="osd"):
+        return pytesseract.image_to_osd(image,config=config,output_type=output_type) #no lang
 
+# def image_to_boxes(image,lang,config,output_type):
+#     config += ' batch.nochop makebox'
+#     args = [image, 'box', lang, config, 0, 0]
+#     return pytesseract.run_and_get_output(*args)
+    
 # if __name__=="__main__":
 #     main(0,0)
 

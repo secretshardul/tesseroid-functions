@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 pytesseract = "*"
 Pillow = "*"
-requests-toolbelt = "*"
 
 [dev-packages]
 
