@@ -18,6 +18,13 @@ provider:
     binaryMediaTypes:
       - 'application/zip'
       - 'application/octet-stream'
+      
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource:
+        - "arn:aws:s3:::tesseroid-functions-dev-pdfhocr-imkg2s251p68/*"
 
 custom:
   pythonRequirements:
@@ -33,6 +40,8 @@ custom:
 functions:
   main:
     handler: handler.main
+    environment:
+      BUCKET_NAME: "tesseroid-functions-dev-pdfhocr-imkg2s251p68"
     layers:
       - arn:aws:lambda:us-east-1:260659138565:layer:layer_fast:3
       # Update this ARN after you've deployed the tesseract layer

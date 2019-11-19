@@ -7,9 +7,8 @@ import json
 import zipfile
 import os
 import boto3
-s3 = boto3.client('s3')
-BUCKET_NAME = 'com.shardul.tesseroid.pdfhocr'
 
+s3 = boto3.client('s3')
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
@@ -89,4 +88,10 @@ def select_func(image,lang,config,output_type,func):
        txt.append(pytesseract.image_to_data(image,lang=lang,config=config,output_type=output_type))
     elif (func=="osd"):
         txt.append(pytesseract.image_to_osd(image,config=config,output_type=output_type)) #no lang
+    elif (func in ["pdf","hocr"]):
+        image_to_pdf_or_ocr = pytesseract.image_to_pdf_or_hocr("/tmp/img",lang=lang,config=config,extension=func)
+        f = open("/tmp/tesseroid.%s"%func, "w+b")
+        f.write(bytearray(image_to_pdf_or_ocr))
+        f.close()
+        s3.upload_file("/tmp/tesseroid.%s"%func, os.environ["BUCKET_NAME"], "tesseroid.%s"%func)
 
