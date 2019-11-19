@@ -39,7 +39,7 @@ functions:
       # - arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:layer:tesseract:1
     events:
       - http:
-          path: /{func}
+          path: /{func} #use for pdf, hocr also
           method: POST
           integration: lambda
           request:
@@ -48,7 +48,7 @@ functions:
               querystrings:
                 lang: false
                 config: false
-                output_type: false
+                output_type: false # pdf/hocr won't have this field
               paths:
                 func: true
             #   headers:
@@ -89,8 +89,65 @@ functions:
             statusCodes:
               200:
                 pattern: '.*"statusCode":200,.*' # JSON response
-
+    # redirect to s3 bucket    
+    # handler: handler.pdf_hocr #image,lang,config,extension
+    # layers:
+    #   - arn:aws:lambda:us-east-1:260659138565:layer:layer_fast:3
+    # events:
+    #   - http:
+    #       path: /pdf
+    #       method: POST
+    #       integration: lambda
+    #       request:
+    #         passThrough: WHEN_NO_TEMPLATES
+    #         parameters:
+    #           querystrings:
+    #             lang: false
+    #             config: false
+    #             extension: false
+    #         #   headers:
+    #         #     Content-Type: false
+    #         template:
+    #           application/zip: '
+    #           {
+    #               "type": "zip",
+    #               "zip": "$input.body",
+    #               "lang": "$input.params(''lang'')",
+    #               "config": "$input.params(''config'')",
+    #               "extension":"pdf"
+    #           }'
+    #           application/json: '
+    #           {
+    #               "type": "json",
+    #               "image": $input.json(''$.image''),
+    #               "lang": "$input.params(''lang'')",
+    #               "config": "$input.params(''config'')",
+    #               "extension":"pdf"
+    #           }'
+    #           application/octet-stream: '
+    #           {
+    #               "type": "img_file",
+    #               "image": "$input.body",
+    #               "lang": "$input.params(''lang'')",
+    #               "config": "$input.params(''config'')",
+    #               "extension":"pdf"
+    #           }'
+              
+    #       response:
+    #         # headers:
+    #         #   Content-Type: "'application/json'"
+    #         template: $input.path('$')
+    #         statusCodes:
+    #           200:
+    #             pattern: '.*"statusCode":200,.*' # JSON response
 # resources- Raw cloudformation code
+
+resources:
+  Resources:
+    pdfhocr:
+      Type: AWS::S3::Bucket
+
+
 # resources:
 #   Resources:
 #     ApiGatewayMethodOcrPost:

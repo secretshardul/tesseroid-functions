@@ -13,27 +13,20 @@ BUCKET_NAME = 'com.shardul.tesseroid.pdfhocr'
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-
+# from PIL import Image
 def main(event, context):
-    global txt
-    txt=[]
     logger.info("event:%s"%event)
     # image = Image.open(BytesIO(base64.b64decode(event["image"])))
     # integration request ensures the 3 are always present. In exception just value is absent
     lang="eng"
     config=""
-    output_type="string" #bytes type not supported
-    func="string"
+    extension="pdf" #bytes type not supported
     if event["lang"]!="":
         lang=event["lang"]
     if event["config"]!="":
         config=event["config"]
-    if event["output_type"]!="":
-        output_type=event["output_type"]
-    if event["func"]!="":
-        func=event["func"]
-    
-   
+    if event["extension"]!="":
+        func=event["extension"]
     
     if(event["type"]=="img_file"):
         # zip file for batch
@@ -41,9 +34,15 @@ def main(event, context):
         image=base64.b64decode(event["image"])
         file1.write(image)
         file1.close()  
-        select_func("/tmp/img",lang=lang,config=config,output_type=output_type,func=func)
-        
+        # ocr = select_func("/tmp/img",lang=lang,config=config,output_type=output_type,func=func)
+        image_to_pdf_or_ocr = pytesseract.image_to_pdf_or_hocr("/tmp/img",lang=lang,config=config,extension=extension)
+        f = open("/tmp/tesseroid.%s"%extension, "w+b")
+        f.write(bytearray(image_to_pdf_or_ocr))
+        f.close()
+        s3.upload_file("/tmp/tesseroid.%s"%extension, BUCKET_NAME, "tesseroid.%s"%extension)
 
+    # how to redirect to multiple files? Maybe compress to ZIP
+    # don't try until then
     elif(event["type"]=="zip"):
         # decode, save, unzip
         file1=open(r"/tmp/compressed.zip","wb")
@@ -59,8 +58,13 @@ def main(event, context):
             with open(path, 'wb') as f:
                 f.write(zfile.read(name))
                 f.close()
-            select_func(path,lang=lang,config=config,output_type=output_type,func=func)
-
+            # ocr = select_func(path,lang=lang,config=config,output_type=output_type,func=func)
+            # txt.append(ocr)
+            image_to_pdf_or_ocr = pytesseract.image_to_pdf_or_hocr(path,lang=lang,config=config,extension=extension)
+            f = open("%s.%s"%(path,extension), "w+b") # /tmp/hello.jpg.pdf will be saved
+            f.write(bytearray(image_to_pdf_or_ocr))
+            f.close()
+            s3.upload_file("%s.%s"%(path,extension), BUCKET_NAME, "%s.%s"%(name,extension))
 
     elif(event["type"]=="json"):
         if event["image"]=="":
@@ -72,21 +76,11 @@ def main(event, context):
             image=response.read()
             file1.write(image)
             file1.close()  
-            select_func("/tmp/img",lang=lang,config=config,output_type=output_type,func=func)
             
-    logger.info("txt:%s"%txt)
-    return json.dumps(txt)
-  
-  
-# string,boxes,data,osd,pdf,hocr    
-def select_func(image,lang,config,output_type,func):
-    global txt
-    if (func=="string"):
-        txt.append(pytesseract.image_to_string(image,lang=lang,config=config,output_type=output_type))
-    elif (func=="boxes"):
-        txt.append(pytesseract.image_to_boxes(image,lang=lang,config=config,output_type=output_type))
-    elif (func=="data"):
-       txt.append(pytesseract.image_to_data(image,lang=lang,config=config,output_type=output_type))
-    elif (func=="osd"):
-        txt.append(pytesseract.image_to_osd(image,config=config,output_type=output_type)) #no lang
-
+            image_to_pdf_or_ocr = pytesseract.image_to_pdf_or_hocr("/tmp/img",lang=lang,config=config,extension=extension)
+            f = open("/tmp/tesseroid.%s"%extension, "w+b")
+            f.write(bytearray(image_to_pdf_or_ocr))
+            f.close()
+            s3.upload_file("/tmp/tesseroid.%s"%extension, BUCKET_NAME, "tesseroid.%s"%extension)
+    
+    return json.dumps("check thine bucket")
