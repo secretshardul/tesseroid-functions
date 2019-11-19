@@ -76,17 +76,13 @@ def select_func(image,lang,config,output_type,func):
     if (func=="string"):
         return pytesseract.image_to_string(image,lang=lang,config=config,output_type=output_type)
     elif (func=="boxes"):
-        return pytesseract.image_to_boxes(image=image,config="box")
-        # return image_to_boxes(image,lang,config,output_type)
+        return pytesseract.image_to_boxes(image,lang=lang,config=config,output_type=output_type)
     elif (func=="data"):
         return pytesseract.image_to_data(image,lang=lang,config=config,output_type=output_type)
     elif (func=="osd"):
         return pytesseract.image_to_osd(image,config=config,output_type=output_type) #no lang
 
-# def image_to_boxes(image,lang,config,output_type):
-#     config += ' batch.nochop makebox'
-#     args = [image, 'box', lang, config, 0, 0]
-#     return pytesseract.run_and_get_output(*args)
+
     
 # if __name__=="__main__":
 #     main(0,0)
