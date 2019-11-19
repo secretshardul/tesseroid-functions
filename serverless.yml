@@ -39,21 +39,24 @@ functions:
       # - arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:layer:tesseract:1
     events:
       - http:
-          path: ocr
-          method: post
+          path: /{func}
+          method: POST
           integration: lambda
           request:
             passThrough: WHEN_NO_TEMPLATES
-            # parameters:
-            #   querystrings:
-            #     lang: false
-            #     config: false
-            #     output_type: false
+            parameters:
+              querystrings:
+                lang: false
+                config: false
+                output_type: false
+              paths:
+                func: true
             #   headers:
             #     Content-Type: false
             template:
               application/zip: '
               {
+                  "func": "$input.params(''func'')",
                   "type": "zip",
                   "zip": "$input.body",
                   "lang": "$input.params(''lang'')",
@@ -62,6 +65,7 @@ functions:
               }'
               application/json: '
               {
+                  "func": "$input.params(''func'')",
                   "type": "json",
                   "image": $input.json(''$.image''),
                   "lang": "$input.params(''lang'')",
@@ -70,6 +74,7 @@ functions:
               }'
               application/octet-stream: '
               {
+                  "func": "$input.params(''func'')",
                   "type": "img_file",
                   "image": "$input.body",
                   "lang": "$input.params(''lang'')",
