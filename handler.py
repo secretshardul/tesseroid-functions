@@ -76,7 +76,8 @@ def main(event, context):
             select_func("/tmp/img",lang=lang,config=config,output_type=output_type,func=func)
     if func in ["pdf","hocr"]:
         logger.info("redirecting to:%s"%redrURL)
-        return {"location":redrURL}
+        raise Exception(redrURL)
+        
     else:
         logger.info("txt:%s"%txt)
         return json.dumps(txt)
@@ -101,8 +102,9 @@ def select_func(image,lang,config,output_type,func):
         f = open("/tmp/%s"%fileName, "w+b")
         f.write(bytearray(image_to_pdf_or_ocr))
         f.close()
-        
-        s3.upload_file("/tmp/%s"%fileName, os.environ["BUCKET_NAME"], fileName,ExtraArgs={'ACL':'public-read'})
-        logger.info("redirecting")
-        redrURL="%s.s3.amazonaws.com/%s"%(os.environ["BUCKET_NAME"], fileName)
-
+        try:
+            s3.upload_file("/tmp/%s"%fileName, os.environ["BUCKET_NAME"], fileName,ExtraArgs={"ACL": "public-read-write"})
+            redrURL="https://%s.s3.amazonaws.com/%s"%(os.environ["BUCKET_NAME"], fileName)
+        except:
+            redrURL="https://aws.amazon.com/s3/"
+        logger.info("redirecting to %s"%redrURL)

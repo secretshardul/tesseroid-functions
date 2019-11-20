@@ -97,7 +97,12 @@ functions:
             template: $input.path('$')
             statusCodes:
               200:
-                pattern: '.*"statusCode":200,.*' # JSON response
+                pattern: '' # JSON response
+              302:
+                pattern: '.*s3.*' # JSON response
+                template: '{"message": "OCR successful, redirecting"}'
+                headers:
+                  Location: 'integration.response.body.errorMessage'
               
     # redirect to s3 bucket    
     # handler: handler.pdf_hocr #image,lang,config,extension
