@@ -98,6 +98,7 @@ functions:
             statusCodes:
               200:
                 pattern: '.*"statusCode":200,.*' # JSON response
+              
     # redirect to s3 bucket    
     # handler: handler.pdf_hocr #image,lang,config,extension
     # layers:

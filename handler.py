@@ -7,6 +7,7 @@ import json
 import zipfile
 import os
 import boto3
+from datetime import datetime
 
 s3 = boto3.client('s3')
 logger = logging.getLogger()
@@ -14,7 +15,8 @@ logger.setLevel(logging.INFO)
 
 
 def main(event, context):
-    global txt
+    global txt, redrURL
+    redrURL=[]
     txt=[]
     logger.info("event:%s"%event)
     # image = Image.open(BytesIO(base64.b64decode(event["image"])))
@@ -72,14 +74,17 @@ def main(event, context):
             file1.write(image)
             file1.close()  
             select_func("/tmp/img",lang=lang,config=config,output_type=output_type,func=func)
-            
-    logger.info("txt:%s"%txt)
-    return json.dumps(txt)
-  
+    if func in ["pdf","hocr"]:
+        logger.info("redirecting to:%s"%redrURL)
+        return {"location":redrURL}
+    else:
+        logger.info("txt:%s"%txt)
+        return json.dumps(txt)
+      
   
 # string,boxes,data,osd,pdf,hocr    
 def select_func(image,lang,config,output_type,func):
-    global txt
+    global txt,redrURL
     if (func=="string"):
         txt.append(pytesseract.image_to_string(image,lang=lang,config=config,output_type=output_type))
     elif (func=="boxes"):
@@ -89,9 +94,15 @@ def select_func(image,lang,config,output_type,func):
     elif (func=="osd"):
         txt.append(pytesseract.image_to_osd(image,config=config,output_type=output_type)) #no lang
     elif (func in ["pdf","hocr"]):
-        image_to_pdf_or_ocr = pytesseract.image_to_pdf_or_hocr("/tmp/img",lang=lang,config=config,extension=func)
-        f = open("/tmp/tesseroid.%s"%func, "w+b")
+        now = datetime.now()
+        timestamp = datetime.timestamp(now)
+        fileName="tesseroid-%s.%s"%(timestamp,func)
+        image_to_pdf_or_ocr = pytesseract.image_to_pdf_or_hocr("/tmp/img",lang=lang,config=config,extension=func) #dont change this name
+        f = open("/tmp/%s"%fileName, "w+b")
         f.write(bytearray(image_to_pdf_or_ocr))
         f.close()
-        s3.upload_file("/tmp/tesseroid.%s"%func, os.environ["BUCKET_NAME"], "tesseroid.%s"%func)
+        
+        s3.upload_file("/tmp/%s"%fileName, os.environ["BUCKET_NAME"], fileName,ExtraArgs={'ACL':'public-read'})
+        logger.info("redirecting")
+        redrURL="%s.s3.amazonaws.com/%s"%(os.environ["BUCKET_NAME"], fileName)
 
